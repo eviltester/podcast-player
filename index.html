@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EvilTester Podcast Player</title>
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <script src="main.js"></script>
+  </head>
+
+  <body>
+    <!-- mvp start by hard coding the eviltester podcast
+
+    https://feed.pod.co/the-evil-tester-show
+    
+    not all urls will work due to cors
+
+    If rss feed for podcast is not obvious then use https://getrssfeed.com/
+
+    try:
+    
+    https://feed.syntax.fm/rss
+
+    Marketing School
+      https://mschool.libsyn.com/rss
+
+    Maximize your social influence
+      https://feeds.buzzsprout.com/836002.rss
+
+    TODO: 
+    
+    - stop playing other audio when select an audio
+    - size audio player to cell size
+    - show podcast name and urls in the 'title' (change to details)
+    - add a filter on details
+    - 'save' and 'load' podcast urls to localstorage
+    - add link to getrssfeed in the gui
+    - style grid
+    - try with a tree view and show the podcast as parent, then the episodes below
+    - style the rows based on, which episode is playing
+    - style the playing cell based on how much is left to play
+    
+    -->
+    <div>
+      <input id="feedurl" />podcast rss url
+      <button
+        onclick="new FeedReader(document.getElementById('feedurl').value).setRowDataWhenReady(gridOptions)"
+      >
+        read rss feed and update grid
+      </button>
+      <button onclick="gridOptions.api.setRowData([])">Clear</button>
+
+      <!-- https://css-tricks.com/how-to-fetch-and-parse-rss-feeds-in-javascript/ -->
+    </div>
+    <div
+      id="myGrid"
+      style="height: 500px; width:100%;"
+      class="ag-theme-alpine"
+    ></div>
+    <p>
+      Built with <a href="https://ag-grid.com">AG Grid</a> Community Edition
+    </p>
+  </body>
+</html>
