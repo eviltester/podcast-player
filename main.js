@@ -7,7 +7,7 @@ class FeedReader {
       .then(response => response.text())
       .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
       .then(data => {
-        console.log(data);
+        //console.log(data);
         const channel = data.querySelector('channel');
         this.channelTitle = channel.querySelector('title').innerHTML;
         this.channelUrl = channel.querySelector('link').innerHTML;
@@ -19,6 +19,8 @@ class FeedReader {
             channelTitle: this.channelTitle,
             channelUrl: this.channelUrl,
             id: String(performance.now()) + String(Math.random() * 16),
+            pubDate: el.querySelector('pubDate'),
+            duration: el.getElementsByTagName('itunes:duration')[0], // or calcuate from enclosure length
             title: el.querySelector('title').innerHTML,
             mp3: el.querySelector('enclosure').getAttribute('url'),
             link: el.querySelector('link')?.innerHTML,
@@ -27,7 +29,7 @@ class FeedReader {
               ?.getAttribute('href')
           });
         });
-        console.table(this.items);
+        //console.table(this.items);
       });
   }
 
@@ -74,13 +76,13 @@ class AudioHTMLRenderer {
 class TextAsHTMLRenderer {
   init(params) {
     // create the cell
-    console.log(params);
+    //console.log(params);
     this.eGui = document.createElement('div');
     this.eGui.style.wordBreak = 'normal';
     this.eGui.style.lineHeight = 'normal';
 
     var source = params.value;
-    console.log(source);
+    //console.log(source);
     this.eGui.innerHTML = `<p>${source}</p>`;
   }
 

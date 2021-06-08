@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>EvilTester Podcast Player</title>
-    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
-    <script src="main.js"></script>
-  </head>
 
-  <body>
-    <!-- mvp start by hard coding the eviltester podcast
+<head>
+  <title>EvilTester Podcast Player</title>
+  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <!-- mvp start by hard coding the eviltester podcast
 
     https://feed.pod.co/the-evil-tester-show
     
@@ -15,15 +16,28 @@
 
     If rss feed for podcast is not obvious then use https://getrssfeed.com/
 
-    try:
-    
-    https://feed.syntax.fm/rss
 
+    try:
+
+    - The Change log - Conversations with the hackers, leaders, and innovators of the software world. -  https://changelog.com/podcast/feed
+
+    - JS Party - Your weekly celebration of JavaScript and the web. -  https://changelog.com/jsparty/feed
+
+    - Founders Talk - In-depth, one-one conversations with founders, CEOs, and makers https://changelog.com/founderstalk/feed 
+    
+
+    - https://feed.syntax.fm/rss
+
+Other onese to try 
     Marketing School
       https://mschool.libsyn.com/rss
 
     Maximize your social influence
       https://feeds.buzzsprout.com/836002.rss
+
+
+    CORS Errors:
+    - JS Jabber - https://feeds.feedwrench.com/js-jabber.rss
 
     TODO: 
     
@@ -32,31 +46,51 @@
     - show podcast name and urls in the 'title' (change to details)
     - add a filter on details
     - 'save' and 'load' podcast urls to localstorage
+    - add loading icon to the grid
     - add link to getrssfeed in the gui
+    - add pagination to the grid
     - style grid
+    - add dates to the grid
+    - surface descriptions in the grid, possibly as an expanable field
+    - consider a separate 'play' control so we click play and it starts in a different div where we show the full description etc.?
+    - create an on hover description/details pop up div
     - try with a tree view and show the podcast as parent, then the episodes below
     - style the rows based on, which episode is playing
     - style the playing cell based on how much is left to play
     
+    DONE:
+
+    - add a drop down of sample podcasts
+
     -->
-    <div>
-      <input id="feedurl" />podcast rss url
-      <button
+  <div>
+    <label for="podcasts">Choose a podcast:</label>
+
+    <select name="podcasts" id="podcasts" onchange="document.getElementById('feedurl').value=this.value"> 
+    <option value="https://feed.pod.co/the-evil-tester-show">The Evil Tester Show</option>     
+      <option value="https://changelog.com/podcast/feed">The Change log</option>
+      <option value="https://changelog.com/jsparty/feed">JS Party</option>
+      <option value="https://changelog.com/founderstalk/feed ">Founders Talk</option>
+      <option value="https://feed.syntax.fm/rss">Syntax FM</option>
+    
+    </select>
+  </div>
+  <div>
+    <label for="feedurl">Podcast RSS URL:</label>
+    <input id="feedurl" size="50"/>
+    <button
         onclick="new FeedReader(document.getElementById('feedurl').value).setRowDataWhenReady(gridOptions)"
       >
-        read rss feed and update grid
+        read rss feed
       </button>
-      <button onclick="gridOptions.api.setRowData([])">Clear</button>
+    <button onclick="gridOptions.api.setRowData([])">Clear Grid</button>
 
-      <!-- https://css-tricks.com/how-to-fetch-and-parse-rss-feeds-in-javascript/ -->
-    </div>
-    <div
-      id="myGrid"
-      style="height: 500px; width:100%;"
-      class="ag-theme-alpine"
-    ></div>
-    <p>
-      Built with <a href="https://ag-grid.com">AG Grid</a> Community Edition
-    </p>
-  </body>
+    <!-- https://css-tricks.com/how-to-fetch-and-parse-rss-feeds-in-javascript/ -->
+  </div>
+  <div id="myGrid" style="height: 500px; width:100%;" class="ag-theme-alpine"></div>
+  <p>
+    Built with <a href="https://ag-grid.com">AG Grid</a> Community Edition
+  </p>
+</body>
+
 </html>
