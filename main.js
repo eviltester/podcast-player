@@ -111,14 +111,10 @@ class EpisodeTooltip {
 
     eGui.classList.add('custom-tooltip');
     eGui.innerHTML = `
-           <p>
-               <span class"name">${data.channelTitle}</span>
+           <p><strong>${data.channelTitle}</strong>
            </p>
            <p>
-               ${data.title}
-           </p>
-           <p>
-           ${data.descriptionTxt.substring(1, 200)}
+           ${data.descriptionTxt.substring(1, 300)}
            </p>
        `;
   }
@@ -160,7 +156,7 @@ var gridOptions = {
   columnDefs: columnDefs,
   rowData: null, // show loading overlay by default
   tooltipShowDelay: 1, // show tooltips after 1 second
-  tooltipMouseTrack: true
+  //tooltipMouseTrack: true, // move tooltip with mouse
 };
 
 // setup the grid after the page has finished loading
