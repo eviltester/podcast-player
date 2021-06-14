@@ -7,6 +7,37 @@
   <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
   <script src="main.js"></script>
 
+<!-- using inline styles because stackblitz wasn't applying the styles.css -->
+
+<style>
+  .custom-tooltip {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  transition: opacity 1;
+  background-color: white;
+  width:50%;
+  line-height: 1;
+  padding: 5px;
+  text-align: left;
+  text-indent: 0;
+}
+
+.custom-tooltip.ag-tooltip-hiding {
+  opacity: 0;
+}
+
+.custom-tooltip p {
+  white-space: normal;
+  border: 0px;
+  margin: 3px;
+  text-indent: 0;
+}
+
+.custom-tooltip p:first-of-type {
+  font-weight: bold;
+}
+</style>
 </head>
 
 <body>
@@ -48,14 +79,12 @@ Other onese to try
     - show podcast name and urls in the 'title' (change to details)
     - add a filter on details
     - 'save' and 'load' podcast urls to localstorage
-    - add loading icon to the grid
     - add link to getrssfeed in the gui
     - add pagination to the grid
     - style grid
     - add dates to the grid
     - surface descriptions in the grid, possibly as an expanable field
     - consider a separate 'play' control so we click play and it starts in a different div where we show the full description etc.?
-    - create an on hover description/details pop up div
     - try with a tree view and show the podcast as parent, then the episodes below
     - style the rows based on, which episode is playing
     - style the playing cell based on how much is left to play
@@ -63,6 +92,8 @@ Other onese to try
     DONE:
 
     - add a drop down of sample podcasts
+    - add loading icon to the grid
+    - create an on hover description/details pop up div
 
     -->
   <div>
