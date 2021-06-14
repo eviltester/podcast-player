@@ -3,8 +3,10 @@
 
 <head>
   <title>EvilTester Podcast Player</title>
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
   <script src="main.js"></script>
+
 </head>
 
 <body>
@@ -66,7 +68,7 @@ Other onese to try
   <div>
     <label for="podcasts">Choose a podcast:</label>
 
-    <select name="podcasts" id="podcasts" onchange="document.getElementById('feedurl').value=this.value"> 
+    <select name="podcasts" id="podcasts" onchange="document.getElementById('feedurl').value=this.value">
     <option value="https://feed.pod.co/the-evil-tester-show">The Evil Tester Show</option>     
       <option value="https://changelog.com/podcast/feed">The Change log</option>
       <option value="https://changelog.com/jsparty/feed">JS Party</option>

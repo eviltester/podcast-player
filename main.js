@@ -15,12 +15,17 @@ class FeedReader {
         const itemList = data.querySelectorAll('item');
 
         itemList.forEach(el => {
+          //console.log(el.querySelector('description').textContent);
           this.items.push({
             channelTitle: this.channelTitle,
             channelUrl: this.channelUrl,
             id: String(performance.now()) + String(Math.random() * 16),
+            description: el.querySelector('description').textContent,
+            descriptionTxt: el
+              .querySelector('description')
+              .textContent.replace(/(<([^>]+)>)/gi, ''),
             pubDate: el.querySelector('pubDate'),
-            duration: el.getElementsByTagName('itunes:duration')[0], // or calcuate from enclosure length
+            duration: el.getElementsByTagName('itunes:duration')[0], // or calculate from enclosure length
             title: el.querySelector('title').innerHTML,
             mp3: el.querySelector('enclosure').getAttribute('url'),
             link: el.querySelector('link')?.innerHTML,
@@ -99,18 +104,44 @@ class TextAsHTMLRenderer {
   destroy() {}
 }
 
+class EpisodeTooltip {
+  init(params) {
+    const eGui = (this.eGui = document.createElement('div'));
+    const data = params.api.getDisplayedRowAtIndex(params.rowIndex).data;
+
+    eGui.classList.add('custom-tooltip');
+    eGui.innerHTML = `
+           <p>
+               <span class"name">${data.channelTitle}</span>
+           </p>
+           <p>
+               ${data.title}
+           </p>
+           <p>
+           ${data.descriptionTxt.substring(1, 200)}
+           </p>
+       `;
+  }
+
+  getGui() {
+    return this.eGui;
+  }
+}
+
 const feed = new FeedReader('https://feed.pod.co/the-evil-tester-show');
 var rowData = [];
 
 var columnDefs = [
   {
     headerName: 'Title',
+    tooltipField: 'title',
     field: 'title',
     wrapText: true,
     autoHeight: true,
     cellRenderer: 'textAsHtml',
     flex: 2,
-    resizable: true
+    resizable: true,
+    tooltipComponent: 'episodeTooltip'
   },
   {
     headerName: 'Episode',
@@ -123,10 +154,13 @@ var columnDefs = [
 var gridOptions = {
   components: {
     textAsHtml: TextAsHTMLRenderer,
-    audioHTMLRenderer: AudioHTMLRenderer
+    audioHTMLRenderer: AudioHTMLRenderer,
+    episodeTooltip: EpisodeTooltip
   },
   columnDefs: columnDefs,
-  rowData: rowData
+  rowData: null, // show loading overlay by default
+  tooltipShowDelay: 1, // show tooltips after 1 second
+  tooltipMouseTrack: true
 };
 
 // setup the grid after the page has finished loading
