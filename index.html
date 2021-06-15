@@ -7,37 +7,37 @@
   <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
   <script src="main.js"></script>
 
-<!-- using inline styles because stackblitz wasn't applying the styles.css -->
+  <!-- using inline styles because stackblitz wasn't applying the styles.css -->
 
-<style>
-  .custom-tooltip {
-  position: absolute;
-  overflow: visible;
-  pointer-events: none;
-  transition: opacity 1;
-  background-color: white;
-  width:50%;
-  line-height: 1;
-  padding: 5px;
-  text-align: left;
-  text-indent: 0;
-}
+  <style>
+    .custom-tooltip {
+      position: absolute;
+      overflow: visible;
+      pointer-events: none;
+      transition: opacity 1;
+      background-color: white;
+      width: 50%;
+      line-height: 1;
+      padding: 5px;
+      text-align: left;
+      text-indent: 0;
+    }
 
-.custom-tooltip.ag-tooltip-hiding {
-  opacity: 0;
-}
+    .custom-tooltip.ag-tooltip-hiding {
+      opacity: 0;
+    }
 
-.custom-tooltip p {
-  white-space: normal;
-  border: 0px;
-  margin: 3px;
-  text-indent: 0;
-}
+    .custom-tooltip p {
+      white-space: normal;
+      border: 0px;
+      margin: 3px;
+      text-indent: 0;
+    }
 
-.custom-tooltip p:first-of-type {
-  font-weight: bold;
-}
-</style>
+    .custom-tooltip p:first-of-type {
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -85,7 +85,7 @@ Other onese to try
     - style the rows based on, which episode is playing
     - style the playing cell based on how much is left to play
     - create a now playing div under the grid showing the audio player and full episode details, when click play, this is filled and activated
-    - add a quick filter where the getQuickFilterText is pulled from all all text data including the description, not just the current column https://www.ag-grid.com/javascript-grid/filter-quick/
+
     
     DONE:
 
@@ -95,6 +95,7 @@ Other onese to try
     - add dates to the grid
     - add pagination to the grid
     - add a filter on details
+    - add a quick filter where the getQuickFilterText is pulled from all all text data including the description, not just the current column https://www.ag-grid.com/javascript-grid/filter-quick/
 
     -->
   <div>
@@ -118,7 +119,7 @@ Other onese to try
         read rss feed
       </button>
     <button onclick="gridOptions.api.setRowData([])">Clear Grid</button>
-
+    <input type="text" id="filterdata" placeholder="Filter..." oninput="onFilterCriteriaChanged()">
     <!-- https://css-tricks.com/how-to-fetch-and-parse-rss-feeds-in-javascript/ -->
   </div>
   <div id="myGrid" style="height: 500px; width:100%;" class="ag-theme-alpine"></div>

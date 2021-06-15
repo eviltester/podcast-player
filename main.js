@@ -145,6 +145,23 @@ function dateFormatter(params) {
 }
 
 /*
+  Allow filtering on data that is in the data setFilter
+  but not necessarily rendered in a cell in the table
+*/
+function onFilterCriteriaChanged() {
+  setFilter(document.getElementById('filterdata').value);
+}
+
+function setFilter(filterValue) {
+  gridOptions.api.setQuickFilter(filterValue);
+}
+
+// call this from a getQuickFilterText
+function getSearchableText(data) {
+  return data.descriptionTxt + ' ' + data.title;
+}
+
+/*
   Define the columns to render in the grid
 */
 var columnDefs = [
@@ -158,7 +175,13 @@ var columnDefs = [
     flex: 2,
     resizable: true,
     tooltipComponent: 'episodeTooltip',
-    filter: 'agTextColumnFilter' // simple built in text filter
+    filter: 'agTextColumnFilter', // simple built in text filter
+    // override quick filter to enable searching of data,
+    // not just the cells
+    // https://ag-grid.com/javascript-grid/filter-quick/
+    getQuickFilterText: params => {
+      return getSearchableText(params.data);
+    }
   },
   {
     headerName: 'Published',
