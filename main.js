@@ -16,6 +16,7 @@ class FeedReader {
 
         itemList.forEach(el => {
           //console.log(el.querySelector('description').textContent);
+          console.log(el.querySelector('pubDate').textContent);
           this.items.push({
             channelTitle: this.channelTitle,
             channelUrl: this.channelUrl,
@@ -24,8 +25,9 @@ class FeedReader {
             descriptionTxt: el
               .querySelector('description')
               .textContent.replace(/(<([^>]+)>)/gi, ''),
-            pubDate: el.querySelector('pubDate'),
-            duration: el.getElementsByTagName('itunes:duration')[0], // or calculate from enclosure length
+            pubDateStr: el.querySelector('pubDate').textContent,
+            pubDate: new Date(el.querySelector('pubDate').textContent),
+            duration: el.getElementsByTagName('itunes:duration')[0].textContent, // or calculate from enclosure length
             title: el.querySelector('title').innerHTML,
             mp3: el.querySelector('enclosure').getAttribute('url'),
             link: el.querySelector('link')?.innerHTML,
@@ -127,6 +129,18 @@ class EpisodeTooltip {
 const feed = new FeedReader('https://feed.pod.co/the-evil-tester-show');
 var rowData = [];
 
+function dateFormatter(params) {
+  console.log(params.data.pubDate);
+  var theDate = params.data.pubDate;
+  var dateAsString =
+    theDate.getDay() +
+    ' / ' +
+    theDate.toLocaleString('default', { month: 'long' }) +
+    ' / ' +
+    theDate.getFullYear();
+  return dateAsString;
+}
+
 var columnDefs = [
   {
     headerName: 'Title',
@@ -134,16 +148,25 @@ var columnDefs = [
     field: 'title',
     wrapText: true,
     autoHeight: true,
-    cellRenderer: 'textAsHtml',
+    cellRenderer: 'textAsHtml', // render as HTML
     flex: 2,
     resizable: true,
-    tooltipComponent: 'episodeTooltip'
+    tooltipComponent: 'episodeTooltip',
+    filter: 'agTextColumnFilter', // simple built in text filter
+  },
+  {
+    headerName: 'Published',
+    field: 'pubDate', // use the date field, not the string
+    valueFormatter: dateFormatter, // use a custom format function for rendering the date
+    sortable: true,  // allow sorting by date
+    filter: 'agDateColumnFilter', // built in date filter
+
   },
   {
     headerName: 'Episode',
     field: 'mp3',
     flex: 2,
-    cellRenderer: 'audioHTMLRenderer'
+    cellRenderer: 'audioHTMLRenderer' // render as an audio player
   }
 ];
 
@@ -157,12 +180,14 @@ var gridOptions = {
   rowData: null, // show loading overlay by default
   tooltipShowDelay: 1, // show tooltips after 1 second
   //tooltipMouseTrack: true, // move tooltip with mouse
+  // add pagination to the grid
+  pagination: true, // switch pagination on
+  paginationPageSize: 10 //max 10 items per page
 };
 
 // setup the grid after the page has finished loading
 document.addEventListener('DOMContentLoaded', function() {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
+  feed.setRowDataWhenReady(gridOptions);
 });
-
-feed.setRowDataWhenReady(gridOptions);
