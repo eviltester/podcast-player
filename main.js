@@ -129,6 +129,9 @@ class EpisodeTooltip {
 const feed = new FeedReader('https://feed.pod.co/the-evil-tester-show');
 var rowData = [];
 
+/*
+    Custom Value Formatter to render the date.
+*/
 function dateFormatter(params) {
   console.log(params.data.pubDate);
   var theDate = params.data.pubDate;
@@ -141,6 +144,9 @@ function dateFormatter(params) {
   return dateAsString;
 }
 
+/*
+  Define the columns to render in the grid
+*/
 var columnDefs = [
   {
     headerName: 'Title',
@@ -152,15 +158,14 @@ var columnDefs = [
     flex: 2,
     resizable: true,
     tooltipComponent: 'episodeTooltip',
-    filter: 'agTextColumnFilter', // simple built in text filter
+    filter: 'agTextColumnFilter' // simple built in text filter
   },
   {
     headerName: 'Published',
     field: 'pubDate', // use the date field, not the string
-    valueFormatter: dateFormatter, // use a custom format function for rendering the date
-    sortable: true,  // allow sorting by date
-    filter: 'agDateColumnFilter', // built in date filter
-
+    valueFormatter: dateFormatter, // use a custom value formatter function for rendering the date
+    sortable: true, // allow sorting by date
+    filter: 'agDateColumnFilter' // built in date filter
   },
   {
     headerName: 'Episode',
@@ -170,7 +175,11 @@ var columnDefs = [
   }
 ];
 
+/*
+  Define the grid and rendering options
+*/
 var gridOptions = {
+  // register the custom components for rendering
   components: {
     textAsHtml: TextAsHTMLRenderer,
     audioHTMLRenderer: AudioHTMLRenderer,
@@ -185,9 +194,13 @@ var gridOptions = {
   paginationPageSize: 10 //max 10 items per page
 };
 
-// setup the grid after the page has finished loading
+/*
+   setup the grid after the page has finished loading
+*/
 document.addEventListener('DOMContentLoaded', function() {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
+
+  // load the default feed into the grid
   feed.setRowDataWhenReady(gridOptions);
 });
