@@ -79,6 +79,31 @@ function playNow(podcastDetails) {
   console.log(podcastDetails);
 }
 
+class PlayButtonHTMLRenderer {
+  init(params) {
+    // create the cell
+    this.eGui = document.createElement('div');
+    this.eGui.className = "playIcon playIconContainer";
+
+    var data = params.data;
+    console.log(data);
+    this.eGui.addEventListener('click',function(){console.log("play now");console.log(data);playNow(data)});
+
+    
+  }
+
+  getGui() {
+    return this.eGui;
+  }
+
+  // gets called whenever the cell refreshes
+  refresh(params) {
+    return true;
+  }
+
+  // gets called when the cell is removed from the grid
+  destroy() {}
+}
 class AudioHTMLRenderer {
   init(params) {
     // create the cell
@@ -92,14 +117,11 @@ class AudioHTMLRenderer {
     //this.eGui.style.width = '100%';
 
     var source = params.value;
-    //var data = JSON.stringify(params.data);
-    // this.eGui.innerHTML = `
-    // <audio controls preload="none" onplay='playNow(${data})'>
-    //   <source src="${source}" type="audio/mpeg" >
-    // </audio>
-    //   `;
-// onclick='playNow(${data})'
-;
+    this.eGui.innerHTML = `
+    <audio controls preload="none">
+      <source src="${source}" type="audio/mpeg" >
+    </audio>
+      `;
     
   }
 
@@ -230,7 +252,7 @@ var columnDefs = [
     headerName: 'Episode',
     field: 'mp3',
     flex: 2,
-    cellRenderer: 'audioHTMLRenderer' // render as an audio player
+    cellRenderer: 'audioHTMLRenderer' // render as a custom control
   }
 ];
 
@@ -241,7 +263,8 @@ var gridOptions = {
   // register the custom components for rendering
   components: {
     textAsHtml: TextAsHTMLRenderer,
-    audioHTMLRenderer: AudioHTMLRenderer,
+    audioHTMLRenderer: PlayButtonHTMLRenderer, // a play button for use with the embedded now playing div
+    // audioHTMLRenderer: AudioHTMLRenderer, // an embedded audio player
     episodeTooltip: EpisodeTooltip
   },
   columnDefs: columnDefs,
