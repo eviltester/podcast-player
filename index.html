@@ -99,6 +99,7 @@ Other ones to try
     - add a quick filter where the getQuickFilterText is pulled from all all text data including the description, not just the current column https://www.ag-grid.com/javascript-grid/filter-quick/
 
     -->
+  <h1>Podcast Player</h1>
   <div>
     <label for="podcasts">Choose a podcast:</label>
 
@@ -108,22 +109,35 @@ Other ones to try
       <option value="https://changelog.com/jsparty/feed">JS Party</option>
       <option value="https://changelog.com/founderstalk/feed ">Founders Talk</option>
       <option value="https://feed.syntax.fm/rss">Syntax FM</option>
-    
     </select>
   </div>
   <div>
-    <label for="feedurl">Podcast RSS URL:</label>
-    <input id="feedurl" size="50"/>
+    <label for="feedurl">URL:</label>
+    <input id="feedurl" size="50" placeholder="Enter RSS Feed URL..."/>
     <button
         onclick="new FeedReader(document.getElementById('feedurl').value).setRowDataWhenReady(gridOptions)"
       >
         read rss feed
       </button>
+    <br/>
     <button onclick="gridOptions.api.setRowData([])">Clear Grid</button>
     <input type="text" id="filterdata" placeholder="Filter..." oninput="onFilterCriteriaChanged()">
     <!-- https://css-tricks.com/how-to-fetch-and-parse-rss-feeds-in-javascript/ -->
   </div>
   <div id="myGrid" style="height: 500px; width:100%;" class="ag-theme-alpine"></div>
+  <div id="nowplaying" style="display:none">
+    <h2>Now Playing</h2>
+    <div class="nowplayingdetails">
+      <p class="podcasttitle"></p>
+      <p class="episodetitle"></p>
+      <p class="episodedescription"></p>
+      <div id="nowplayingaudio">
+        <audio controls preload="none">
+          <source id="nowplayingaudiosource" src="" type="audio/mpeg">
+        </audio>
+      </div>
+    </div>
+  </div>
   <p>
     Built with <a href="https://ag-grid.com">AG Grid</a> Community Edition
   </p>

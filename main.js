@@ -53,6 +53,16 @@ class FeedReader {
   }
 }
 
+function playNow(podcastDetails) {
+  // stop all current audios
+  document.querySelectorAll('audio').forEach(el => el.stop());
+
+  // show now playing
+  document.querySelector('#nowplaying').style = 'block';
+
+  console.log(podcastDetails);
+}
+
 class AudioHTMLRenderer {
   init(params) {
     // create the cell
@@ -60,9 +70,11 @@ class AudioHTMLRenderer {
     this.eGui.style.width = '100%';
 
     var source = params.value;
+    var data = params.data;
+    // onplay="playNow(${data})"
     this.eGui.innerHTML = `
     <audio controls preload="none">
-      <source src="${source}" type="audio/mpeg">
+      <source src="${source}" type="audio/mpeg" >
     </audio>
       `;
   }
