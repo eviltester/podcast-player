@@ -54,11 +54,27 @@ class FeedReader {
 }
 
 function playNow(podcastDetails) {
-  // stop all current audios
-  document.querySelectorAll('audio').forEach(el => el.stop());
+  
+
+  // set details
+  document.querySelector('.podcasttitle').innerHTML = podcastDetails.channelTitle;
+  document.querySelector('.episodetitle').innerHTML = podcastDetails.title;
+  document.querySelector('.episodedescription').innerHTML = podcastDetails.description;
+  document.querySelector('#nowplayingaudiosource').src = podcastDetails.mp3;
+  var nowPlayingAudio = document.querySelector('#nowplayingaudio');
 
   // show now playing
   document.querySelector('#nowplaying').style = 'block';
+
+  // just one playing please
+  document.querySelectorAll('audio').forEach(el => {
+    if(el!=nowPlayingAudio){
+      el.pause()
+    }else{
+      el.load();
+      el.play();
+    }
+  });
 
   console.log(podcastDetails);
 }
@@ -67,16 +83,24 @@ class AudioHTMLRenderer {
   init(params) {
     // create the cell
     this.eGui = document.createElement('div');
-    this.eGui.style.width = '100%';
+    this.eGui.className = "playIcon playIconContainer";
+
+    var data = params.data;
+    console.log(data);
+    this.eGui.addEventListener('click',function(){console.log("play now");console.log(data);playNow(data)});
+
+    //this.eGui.style.width = '100%';
 
     var source = params.value;
-    var data = params.data;
-    // onplay="playNow(${data})"
-    this.eGui.innerHTML = `
-    <audio controls preload="none">
-      <source src="${source}" type="audio/mpeg" >
-    </audio>
-      `;
+    //var data = JSON.stringify(params.data);
+    // this.eGui.innerHTML = `
+    // <audio controls preload="none" onplay='playNow(${data})'>
+    //   <source src="${source}" type="audio/mpeg" >
+    // </audio>
+    //   `;
+// onclick='playNow(${data})'
+;
+    
   }
 
   getGui() {
